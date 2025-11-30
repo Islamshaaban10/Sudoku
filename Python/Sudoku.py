@@ -4,8 +4,8 @@ from Field import Field
 class Sudoku:
 
     def __init__(self, filename):
-        self.board = self.read_sudoku(filename)
-
+        self.board = self.read_sudoku(filename)   
+          
     def __str__(self):
         output = "╔═══════╦═══════╦═══════╗\n"
         # iterate through rows
@@ -32,7 +32,7 @@ class Sudoku:
         assert filename is not None and filename != "", "Invalid filename"
         # Setup 9x9 grid
         grid = [[Field for _ in range(9)] for _ in range(9)]
-
+        
         try:
             with open(filename, "r") as file:
                 for row, line in enumerate(file):
@@ -43,7 +43,7 @@ class Sudoku:
                             grid[row][col_index] = Field()
                         else:
                             grid[row][col_index] = Field(int(char))
-
+               
         except FileNotFoundError:
             print("Error opening file: " + filename)
 
@@ -56,17 +56,64 @@ class Sudoku:
         Adds a list of neighbors to each field
         @param grid: 9x9 list of Fields
         """
-
+ 
     # TODO: for each field, add its neighbors
+
+        for row in range(9):
+            for col in range(9):        # iterate over the fields in the grid
+                field =grid[row][col]
+                neighbours=[]
+
+                for nc in range(9):     # find the neighbours in the colum
+                    if nc == col:
+                        continue
+                    #neighbours.append(grid[row][nc].get_value())
+                    neighbours.append(grid[row][nc])
+                #print("neighbour in colom of filed ",row,col ,neighbours)
+
+                
+                for nr in range(9):       # find the neighbours in the row
+                    if nr == row:
+                        continue
+                    #neighbours.append(grid[nr][col].get_value())
+                    neighbours.append(grid[nr][col])                    
+                #print("neighbour  of filed ",row,col ,neighbours)
+
+                subgrid_row = row//3            # find the neighbours in the subgrid
+                subgrid_col = col//3
+                #subgrid_n   = subgrid_row *3 + subgrid_col+1
+                subgrid_row_start =subgrid_row*3
+                subgrid_col_start =subgrid_col*3
+
+                for sr in range(subgrid_row_start,subgrid_row_start+3):
+                    for sc in range (subgrid_col_start,subgrid_col_start+3):
+                        if sr ==row or sc ==col :
+                            continue
+                       # neighbours.append(grid[sr][sc].get_value())
+                        neighbours.append(grid[sr][sc])                        
+                #print("neighbour  of filed ",row,col ,neighbours)
+                field.set_neighbours(neighbours)
+
+       
+
+
+
+
+
+            
 
     def board_to_string(self):
 
         output = ""
         for row in range(len(self.board)):
             for col in range(len(self.board[row])):
-                output += self.board[row][col].get_value()
+                output += str (self.board[row][col].get_value()) #convert to string 
             output += "\n"
+        
+        
         return output
+    
 
     def get_board(self):
+        
         return self.board

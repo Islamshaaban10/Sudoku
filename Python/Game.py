@@ -12,6 +12,8 @@ class Game:
         @return: true if the constraints can be satisfied, false otherwise
         """
         # TODO: implement AC-3
+       # board=  self.sudoku.board_to_string()
+        #print( board)
         return True
 
     def valid_solution(self) -> bool:
