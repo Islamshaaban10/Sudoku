@@ -4,8 +4,8 @@ from Sudoku import Sudoku
 
 sudoku_folder = os.path.join(os.path.dirname(__file__), "Sudokus")
 
-class App:
 
+class App:
 
     @staticmethod
     def solve_sudoku(sudoku_file):

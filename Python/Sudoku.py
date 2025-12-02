@@ -61,59 +61,45 @@ class Sudoku:
 
         for row in range(9):
             for col in range(9):        # iterate over the fields in the grid
-                field =grid[row][col]
-                neighbours=[]
+                field = grid[row][col]
+                neighbours = []
 
                 for nc in range(9):     # find the neighbours in the colum
                     if nc == col:
                         continue
                     #neighbours.append(grid[row][nc].get_value())
-                    neighbours.append(grid[row][nc])
-                #print("neighbour in colom of filed ",row,col ,neighbours)
+                    neighbours.append(grid[row][nc].set_neighbours(col))
 
-                
                 for nr in range(9):       # find the neighbours in the row
                     if nr == row:
                         continue
                     #neighbours.append(grid[nr][col].get_value())
-                    neighbours.append(grid[nr][col])                    
-                #print("neighbour  of filed ",row,col ,neighbours)
+                    neighbours.append(grid[nr][col].set_neighbours(row))
 
                 subgrid_row = row//3            # find the neighbours in the subgrid
                 subgrid_col = col//3
                 #subgrid_n   = subgrid_row *3 + subgrid_col+1
-                subgrid_row_start =subgrid_row*3
-                subgrid_col_start =subgrid_col*3
+                subgrid_row_start = subgrid_row * 3
+                subgrid_col_start = subgrid_col * 3
 
-                for sr in range(subgrid_row_start,subgrid_row_start+3):
-                    for sc in range (subgrid_col_start,subgrid_col_start+3):
-                        if sr ==row or sc ==col :
+                for sr in range(subgrid_row_start,subgrid_row_start + 3):
+                    for sc in range (subgrid_col_start,subgrid_col_start + 3):
+                        if sr == row or sc == col:
                             continue
-                       # neighbours.append(grid[sr][sc].get_value())
-                        neighbours.append(grid[sr][sc])                        
-                #print("neighbour  of filed ",row,col ,neighbours)
+                        #neighbours.append(grid[sr][sc].get_value())
+                        #neighbours.append(grid[sr][sc].set_neighbours())
+
                 field.set_neighbours(neighbours)
+                print("position", row, ",", col, "has neighbours", neighbours)
 
-       
-
-
-
-
-
-            
 
     def board_to_string(self):
-
         output = ""
         for row in range(len(self.board)):
             for col in range(len(self.board[row])):
                 output += str (self.board[row][col].get_value()) #convert to string 
             output += "\n"
-        
-        
         return output
-    
 
     def get_board(self):
-        
         return self.board

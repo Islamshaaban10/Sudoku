@@ -6,6 +6,9 @@ class Field:
         self.value = 0
         self.domain = []
         # A list of all the fields that this field is constrained by
+
+
+        #self.neighbours = [1, 2, 3] #just for testing
         self.neighbours = []
 
         # Constructor in case the field is unknown
@@ -53,6 +56,9 @@ class Field:
         """
         new_neighbours = self.neighbours.copy()
         new_neighbours.remove(b)
+
+        print("new neighbours:", new_neighbours)
+
         return new_neighbours
 
     # endregion
