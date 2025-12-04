@@ -21,15 +21,14 @@ class Game:
         domain = self.field.get_domain()
 
         var_queue = [(val_col, val_row) for val_col in range(9) for val_row in range(9)]
-
-
-
-        val_queue = [d_val for d_val in domain]
-        neighbour_queue = [n_val for n_val in neighbours]
-
         print("var_queue:", var_queue)
-        print("val_queue", val_queue)
-        print("neighbour_queue", neighbour_queue)
+
+        for var in var_queue:
+            val_queue = [d_val for d_val in domain]
+            neighbour_queue = [n_val for n_val in neighbours]
+
+            print("val_queue", val_queue)
+            print("neighbour_queue", neighbour_queue)
 
         return True
 
