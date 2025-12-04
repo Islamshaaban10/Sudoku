@@ -17,24 +17,32 @@ class Game:
         """
         # TODO: implement AC-3
 
-        neighbours = self.field.get_neighbours()    # this returns an empty list, it should not do that
-        domain = self.field.get_domain()
+        grid = self.sudoku.get_board()
+        var_queue = []
 
-        var_queue = [(val_col, val_row) for val_col in range(9) for val_row in range(9)]
-        print("var_queue:", var_queue)
+        for col in range(9):
+            for row in range(9):
+                value = grid[col][row]
+                #print("field", col, ",", row, "has value:", value)
 
-        for var in var_queue:
-            val_queue = [d_val for d_val in domain]
-            neighbour_queue = [n_val for n_val in neighbours]
+                domain = grid[col][row].get_domain()
 
-            print("val_queue", val_queue)
-            print("neighbour_queue", neighbour_queue)
+                var_queue.append([col, row])
+
+                neighbours = grid[col][row].get_neighbours()
+
+                Game.revise(self, domain, neighbours, value)
+
 
         return True
 
-    def revise(self, var, neighbour):
-        return True
+    def revise(self, domain, neighbour, value):
+        for n_value in neighbour:
+            if n_value != 0:
+                value.remove_from_domain(n_value)
+                print("revised domain", domain)
 
+        return True
 
 
     def valid_solution(self) -> bool:
