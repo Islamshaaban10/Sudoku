@@ -33,15 +33,14 @@ class Game:
 
                 Game.revise(self, domain, neighbours, value)
 
-
         return True
+
 
     def revise(self, domain, neighbour, value):
         for n_value in neighbour:
             if n_value != 0:
                 value.remove_from_domain(n_value)
-                print("revised domain", domain)
-
+                print("for value", value, "the revised domain is", domain)
         return True
 
 
