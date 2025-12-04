@@ -67,14 +67,14 @@ class Sudoku:
                 for nc in range(9):     # find the neighbours in the colum
                     if nc == col:
                         continue
-                    #neighbours.append(grid[row][nc].get_value())
-                    neighbours.append(grid[row][nc].set_neighbours(col))
+                    neighbours.append(grid[row][nc].get_value())
+                    #neighbours.append(grid[row][nc].set_neighbours(col))
 
                 for nr in range(9):       # find the neighbours in the row
                     if nr == row:
                         continue
-                    #neighbours.append(grid[nr][col].get_value())
-                    neighbours.append(grid[nr][col].set_neighbours(row))
+                    neighbours.append(grid[nr][col].get_value())
+                    #neighbours.append(grid[nr][col].set_neighbours(row))
 
                 subgrid_row = row//3            # find the neighbours in the subgrid
                 subgrid_col = col//3
@@ -86,11 +86,11 @@ class Sudoku:
                     for sc in range (subgrid_col_start,subgrid_col_start + 3):
                         if sr == row or sc == col:
                             continue
-                        #neighbours.append(grid[sr][sc].get_value())
+                        neighbours.append(grid[sr][sc].get_value())
                         #neighbours.append(grid[sr][sc].set_neighbours())
 
                 field.set_neighbours(neighbours)
-                print("position", row, ",", col, "has neighbours", neighbours)
+                #print("variable", row, ",", col, "has neighbours", neighbours)
 
 
     def board_to_string(self):

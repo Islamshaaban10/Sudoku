@@ -17,25 +17,26 @@ class Game:
         """
         # TODO: implement AC-3
 
-        domain = self.field.get_domain()
-        # print("domain:", domain)
         neighbours = self.field.get_neighbours()    # this returns an empty list, it should not do that
-        print("neighbours:", neighbours)
+        domain = self.field.get_domain()
 
-        for nc in range(9):
-            col = nc
-            for nr in range(9):
-                row = nr
+        var_queue = [(val_col, val_row) for val_col in range(9) for val_row in range(9)]
 
-                for var in domain:
-                    # print("variable in domain:", d_variable)
-                    if var in neighbours:
-                        self.field.remove_from_domain(var)
 
-                    #print("for position", col, ",", row)
-                    #print("the updated domain is:", domain)
+
+        val_queue = [d_val for d_val in domain]
+        neighbour_queue = [n_val for n_val in neighbours]
+
+        print("var_queue:", var_queue)
+        print("val_queue", val_queue)
+        print("neighbour_queue", neighbour_queue)
 
         return True
+
+    def revise(self, var, neighbour):
+        return True
+
+
 
     def valid_solution(self) -> bool:
         """
