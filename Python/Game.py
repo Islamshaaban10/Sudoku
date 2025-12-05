@@ -1,11 +1,7 @@
-from Field import Field
-from Sudoku import Sudoku
-
 
 class Game:
     def __init__(self, sudoku):
         self.sudoku = sudoku
-        self.field = Field()
 
     def show_sudoku(self):
         print(self.sudoku)
@@ -23,26 +19,27 @@ class Game:
         for col in range(9):
             for row in range(9):
                 value = grid[col][row]
-                #print("field", col, ",", row, "has value:", value)
-
                 domain = grid[col][row].get_domain()
-
-                var_queue.append([col, row])
-
                 neighbours = grid[col][row].get_neighbours()
 
-                Game.revise(self, domain, neighbours, value)
+                if value.is_finalized() is False:   # check if the field is empty
+                    Game.revise(self, domain, neighbours, value)
+                    # print("for field", col, ",", row, "the revised domain is", domain)
+                    var_queue.append([col, row])    # add the fields to the queue
+
+                    if value.get_domain_size() == 1:
+                        value.set_value(domain[0])  # if the domain has one value left, set the field to that value
+                        # print("for field", col, ",", row, "the new value is:", value)
+                        var_queue.remove([col, row])    # remove the field from the queue
+
+        # print(var_queue)
 
         return True
-
 
     def revise(self, domain, neighbour, value):
         for n_value in neighbour:
-            if n_value != 0:
-                value.remove_from_domain(n_value)
-                print("for value", value, "the revised domain is", domain)
-        return True
-
+            if n_value != 0 and n_value in domain:
+                value.remove_from_domain(n_value)   # remove all neighbouring values from the domain
 
     def valid_solution(self) -> bool:
         """

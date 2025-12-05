@@ -6,9 +6,6 @@ class Field:
         self.value = 0
         self.domain = []
         # A list of all the fields that this field is constrained by
-
-
-        #self.neighbours = [7, 6, 2, 4] #just for testing
         self.neighbours = []
 
         # Constructor in case the field is unknown
