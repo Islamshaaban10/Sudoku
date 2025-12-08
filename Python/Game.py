@@ -15,6 +15,7 @@ class Game:
 
         grid = self.sudoku.get_board()
         var_queue = []
+        domain_queue = []
 
         for col in range(9):
             for row in range(9):
@@ -23,20 +24,23 @@ class Game:
                 neighbours = grid[col][row].get_neighbours()
 
                 if value.is_finalized() is False:   # check if the field is empty
-                    Game.revise(self, domain, neighbours, value)
+                    Game.remove_neighbours(self, domain, neighbours, value)
                     # print("for field", col, ",", row, "the revised domain is", domain)
                     var_queue.append([col, row])    # add the fields to the queue
+                    domain_queue.append(domain)
 
                     if value.get_domain_size() == 1:
                         value.set_value(domain[0])  # if the domain has one value left, set the field to that value
                         # print("for field", col, ",", row, "the new value is:", value)
                         var_queue.remove([col, row])    # remove the field from the queue
+                        domain_queue.remove(domain)
 
-        # print(var_queue)
+        domain_queue_sorted = sorted(domain_queue, key=len)
+        # print(domain_queue_sorted)
 
         return True
 
-    def revise(self, domain, neighbour, value):
+    def remove_neighbours(self, domain, neighbour, value):
         for n_value in neighbour:
             if n_value != 0 and n_value in domain:
                 value.remove_from_domain(n_value)   # remove all neighbouring values from the domain
