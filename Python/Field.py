@@ -84,6 +84,7 @@ class Field:
     # region Misc Functions
 
     def __str__(self):
+        #print(self.value)
         """
         Displays non-finalized fields with a period, otherwise displays the finalized value
         :return:
