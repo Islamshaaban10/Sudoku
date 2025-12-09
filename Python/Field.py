@@ -53,9 +53,6 @@ class Field:
         """
         new_neighbours = self.neighbours.copy()
         new_neighbours.remove(b)
-
-        print("new neighbours:", new_neighbours)
-
         return new_neighbours
 
     # endregion
@@ -84,7 +81,6 @@ class Field:
     # region Misc Functions
 
     def __str__(self):
-        #print(self.value)
         """
         Displays non-finalized fields with a period, otherwise displays the finalized value
         :return:
