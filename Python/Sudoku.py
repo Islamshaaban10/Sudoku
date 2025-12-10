@@ -56,8 +56,6 @@ class Sudoku:
         Adds a list of neighbors to each field
         @param grid: 9x9 list of Fields
         """
- 
-    # TODO: for each field, add its neighbors
 
         for row in range(9):
             for col in range(9):        # iterate over the fields in the grid
@@ -67,31 +65,25 @@ class Sudoku:
                 for nc in range(9):     # find the neighbours in the colum
                     if nc == col:
                         continue
-                    #neighbours.append(grid[row][nc].get_value()) # for testing
                     neighbours.append(grid[row][nc])
 
                 for nr in range(9):       # find the neighbours in the row
                     if nr == row:
                         continue
-                    #neighbours.append(grid[nr][col].get_value()) # for testing
                     neighbours.append(grid[nr][col])
 
                 subgrid_row = row//3            # find the neighbours in the subgrid
                 subgrid_col = col//3
-                #subgrid_n   = subgrid_row *3 + subgrid_col+1
                 subgrid_row_start = subgrid_row * 3
                 subgrid_col_start = subgrid_col * 3
 
-                for sr in range(subgrid_row_start,subgrid_row_start + 3):
-                    for sc in range (subgrid_col_start,subgrid_col_start + 3):
+                for sr in range(subgrid_row_start, subgrid_row_start + 3):
+                    for sc in range (subgrid_col_start, subgrid_col_start + 3):
                         if sr == row or sc == col:
                             continue
-                        #neighbours.append(grid[sr][sc].get_value())    #for testing
                         neighbours.append(grid[sr][sc])
 
                 field.set_neighbours(neighbours)
-                #print("variable", row, ",", col, "has neighbours", neighbours)
-
 
     def board_to_string(self):
         output = ""

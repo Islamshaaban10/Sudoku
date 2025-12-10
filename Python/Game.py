@@ -18,31 +18,32 @@ class Game:
         @return: true if the constraints can be satisfied, false otherwise
         """
         # TODO: implement AC-3
-        
-        Grid = self.sudoku.get_board()
+
+        grid = self.sudoku.get_board()
         queue = []
 
-        # creat arcs queue
+        # create arcs queue
         for row in range(9):
             for col in range(9):
-                 field = Grid[row][col]   
+                field = grid[row][col]
 
                  #if not field.is_finalized():
                     #neighbours_values =set()
                     #domain = field.get_domain()
                     #print(" Domain of ",row,col,domain)
-                 for n in field.get_neighbours():
-                        queue.append((field,n))     # List of all arcs
+                for n in field.get_neighbours():
+                    queue.append((field, n))     # List of all arcs
 
-      # revise function 
-        def revise (Xm,Xn):
+        # revise function
+        def revise(Xm, Xn):
+            #print("xm:", Xm, "Xn:", Xn)
 
             if Xm.is_finalized():
                 return False
             
             revised = False
             if Xn.is_finalized():
-                Xn_domain =[ Xn.get_value()]
+                Xn_domain = [Xn.get_value()]
             else:
                 Xn_domain = Xn.get_domain()
 
@@ -50,40 +51,26 @@ class Game:
             copy_Xm_domain = Xm_domain.copy()
 
             for md in copy_Xm_domain:
-                    if not any (md != nd  for nd in Xn_domain)  :
-                      Xm.remove_from_domain(md) 
-                      revised = True
+                if not any(md != nd for nd in Xn_domain):
+                    Xm.remove_from_domain(md)
+                    revised = True
             return revised           
             
         counter = 0
-        while queue :
-            counter =counter +1
-            print ( "counter", counter)
-            print(self.sudoku)
-            f,n =queue.pop()
+        while queue:
+            counter = counter + 1
+            #print("counter", counter)
+            #print(self.sudoku)
+            f, n = queue.pop()
 
-            if   revise(f,n):
+            if revise(f, n):
                # if f.get_domain_size()==0 and not f.is_finalized():
-                    #return false
+                    # return false
                 
                 for xk in f.get_other_neighbours(n):
-                    queue.append((xk,f))
-                
-                   # if n.get_value() != 0 :
-                      # neighbours_values.add(n.get_value())
-                       
+                    queue.append((xk, f))
 
-                    # add to queue (field , neighbours)
-
-                 # remove neighbours values from the domain  
-                 #if not field.is_finalized(): 
-                   # for d in domain :                         
-                        #if d in neighbours_values:
-                          #  field.remove_from_domain(d)
-                           # print ("remove domain",d, row,col,field.get_domain())
-
-                 #print("neighbours_values of ",row,col,neighbours_values)
-                # print ("new domain of ", row,col,field.get_domain())              
+        print(self.sudoku)
         return True
     
 
@@ -153,5 +140,42 @@ class Game:
         Checks the validity of a sudoku solution
         @return: true if the sudoku solution is correct
         """
-        # TODO: implement valid_solution function
-        return False
+
+        domain = [1, 2, 3, 4, 5, 6, 7, 8, 9]
+        grid = self.sudoku.get_board()
+
+        for r in range(9):
+            for c in range(9):
+                field = grid[r][c]
+                if field.is_finalized() is False:
+                    return False
+                else:
+                    for row in range(9):
+                        for col in range(9):
+                            domain_c = domain.copy()
+                            domain_r = domain.copy()
+                            domain_s = domain.copy()
+
+                            for nc in range(9):
+                                value = grid[row][nc].get_value()
+                                if value in domain_c:
+                                    domain_c.remove(value)
+
+                            for nr in range(9):
+                                value = grid[nr][col].get_value()
+                                if value in domain_r:
+                                    domain_r.remove(value)
+
+                            subgrid_row = row // 3
+                            subgrid_col = col // 3
+                            subgrid_row_start = subgrid_row * 3
+                            subgrid_col_start = subgrid_col * 3
+
+                            for sr in range(subgrid_row_start, subgrid_row_start + 3):
+                                for sc in range(subgrid_col_start, subgrid_col_start + 3):
+                                    value = grid[sr][sc].get_value()
+                                    if value in domain_s:
+                                        domain_s.remove(value)
+
+                            if not domain_c and not domain_r and not domain_s:
+                                return True
