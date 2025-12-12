@@ -1,13 +1,13 @@
-
 import copy
 import queue
+import time
 
 from sympy import false, true
-
 
 class Game:
     def __init__(self, sudoku):
         self.sudoku = sudoku
+        self.start_time = time.process_time()
 
     def show_sudoku(self):
         print(self.sudoku)
@@ -27,20 +27,20 @@ class Game:
             for col in range(9):
                 field = grid[row][col]
 
-                 #if not field.is_finalized():
-                    #neighbours_values =set()
-                    #domain = field.get_domain()
-                    #print(" Domain of ",row,col,domain)
+                # if not field.is_finalized():
+                # neighbours_values =set()
+                # domain = field.get_domain()
+                # print(" Domain of ",row,col,domain)
                 for n in field.get_neighbours():
-                    queue.append((field, n))     # List of all arcs
+                    queue.append((field, n))  # List of all arcs
 
         # revise function
         def revise(Xm, Xn):
-            #print("xm:", Xm, "Xn:", Xn)
+            # print("xm:", Xm, "Xn:", Xn)
 
             if Xm.is_finalized():
                 return False
-            
+
             revised = False
             if Xn.is_finalized():
                 Xn_domain = [Xn.get_value()]
@@ -54,26 +54,24 @@ class Game:
                 if not any(md != nd for nd in Xn_domain):
                     Xm.remove_from_domain(md)
                     revised = True
-            return revised           
-            
+            return revised
+
         counter = 0
         while queue:
             counter = counter + 1
-            #print("counter", counter)
-            #print(self.sudoku)
+            # print("counter", counter)
+            # print(self.sudoku)
             f, n = queue.pop()
 
             if revise(f, n):
-               # if f.get_domain_size()==0 and not f.is_finalized():
-                    # return false
-                
+                # if f.get_domain_size()==0 and not f.is_finalized():
+                # return false
+
                 for xk in f.get_other_neighbours(n):
                     queue.append((xk, f))
 
         print(self.sudoku)
         return True
-    
-
 
 
     """
@@ -141,13 +139,43 @@ class Game:
         @return: true if the sudoku solution is correct
         """
 
+        grid = self.sudoku.get_board()
+        solve = bool
+
+        for row in range(9):
+            for col in range(9):
+                field = grid[row][col]
+
+                if not field.is_finalized() or field.get_value() in field.get_neighbours():
+                    end_time = time.process_time()
+                    total_time = end_time - self.start_time
+                    print("process time:", total_time)
+                    return False
+                else:
+                    solve = True
+                    continue
+
+        if solve:
+            end_time = time.process_time()
+            total_time = end_time - self.start_time
+            print("process time:", total_time)
+            return True
+
+
+
+        """""
         domain = [1, 2, 3, 4, 5, 6, 7, 8, 9]
         grid = self.sudoku.get_board()
 
         for r in range(9):
             for c in range(9):
                 field = grid[r][c]
+                print("is_finalized:", field.is_finalized())
+
                 if field.is_finalized() is False:
+                    end_time = time.process_time()
+                    total_time = end_time - self.start_time
+                    print("process time:", total_time)
                     return False
                 else:
                     for row in range(9):
@@ -178,4 +206,8 @@ class Game:
                                         domain_s.remove(value)
 
                             if not domain_c and not domain_r and not domain_s:
+                                end_time = time.process_time()
+                                total_time = end_time - self.start_time
+                                print("process time:", total_time)
                                 return True
+        """""
