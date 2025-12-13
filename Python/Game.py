@@ -64,8 +64,8 @@ class Game:
             f, n = queue.pop()
 
             if revise(f, n):
-                # if f.get_domain_size()==0 and not f.is_finalized():
-                # return false
+                if f.get_domain_size()==0 and not f.is_finalized():
+                   return false
 
                 for xk in f.get_other_neighbours(n):
                     queue.append((xk, f))

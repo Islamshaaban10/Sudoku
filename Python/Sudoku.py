@@ -56,22 +56,24 @@ class Sudoku:
         Adds a list of neighbors to each field
         @param grid: 9x9 list of Fields
         """
-
+        diagonal_constrin = True
+        diag2_constrin  = False
         for row in range(9):
             for col in range(9):        # iterate over the fields in the grid
                 field = grid[row][col]
                 neighbours = []
-
+                neighbours_Val =[]
                 for nc in range(9):     # find the neighbours in the colum
                     if nc == col:
                         continue
+                    neighbours_Val.append(grid[row][nc].get_value())
                     neighbours.append(grid[row][nc])
 
                 for nr in range(9):       # find the neighbours in the row
                     if nr == row:
                         continue
                     neighbours.append(grid[nr][col])
-
+                    neighbours_Val.append(grid[nr][col].get_value())
                 subgrid_row = row//3            # find the neighbours in the subgrid
                 subgrid_col = col//3
                 subgrid_row_start = subgrid_row * 3
@@ -81,8 +83,33 @@ class Sudoku:
                     for sc in range (subgrid_col_start, subgrid_col_start + 3):
                         if sr == row or sc == col:
                             continue
+                        neighbours_Val.append(grid[sr][sc].get_value())
                         neighbours.append(grid[sr][sc])
 
+                if diagonal_constrin :
+                    if col == row:              # add the frist dignoal 
+                        for dig_r in range(9):
+                            if dig_r == row : 
+                                continue
+                            for  dig_c in range(9):
+                                if dig_c == col:
+                                    continue
+                                if dig_c == dig_r :
+                                  if not any(n == grid[dig_r][dig_c] for n in neighbours):
+                                        neighbours_Val.append(grid[dig_r][dig_c].get_value())
+                                        neighbours.append(grid[dig_r][dig_c])
+                    if col + row == 8 and diag2_constrin:
+                        for dig2_r in range(9):
+                            if dig2_r == row : 
+                                continue
+                            for  dig2_c in range(9):
+                                if dig2_c == col:
+                                    continue
+                                if dig2_c + dig2_r ==8 :
+                                     if not any(n == grid[dig2_r][dig2_c] for n in neighbours):
+                                        neighbours_Val.append(grid[dig2_r][dig2_c].get_value())
+                                        neighbours.append(grid[dig2_r][dig2_c])                
+                print ("neighbours of ",row,col,neighbours_Val )
                 field.set_neighbours(neighbours)
 
     def board_to_string(self):
