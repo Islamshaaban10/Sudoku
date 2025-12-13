@@ -56,7 +56,7 @@ class Sudoku:
         Adds a list of neighbors to each field
         @param grid: 9x9 list of Fields
         """
-        diagonal_constrin = True
+        diagonal_constrin = False
         diag2_constrin  = False
         for row in range(9):
             for col in range(9):        # iterate over the fields in the grid

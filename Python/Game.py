@@ -1,5 +1,5 @@
 import copy
-import queue
+from collections import deque
 import time
 
 from sympy import false, true
@@ -20,19 +20,18 @@ class Game:
         # TODO: implement AC-3
 
         grid = self.sudoku.get_board()
-        queue = []
-
+        #queue = []
+        queue = deque()
         # create arcs queue
         for row in range(9):
             for col in range(9):
                 field = grid[row][col]
 
-                # if not field.is_finalized():
-                # neighbours_values =set()
-                # domain = field.get_domain()
-                # print(" Domain of ",row,col,domain)
-                for n in field.get_neighbours():
-                    queue.append((field, n))  # List of all arcs
+                for n in field.get_neighbours():  # List of all arcs
+                    if n.is_finalized():
+                      queue.appendleft((field, n))  # Heuristcs priority to arcs with finalized fields  
+                    else:
+                      queue.append((field, n)) 
 
         # revise function
         def revise(Xm, Xn):
@@ -56,19 +55,24 @@ class Game:
                     revised = True
             return revised
 
+
         counter = 0
         while queue:
             counter = counter + 1
             # print("counter", counter)
             # print(self.sudoku)
-            f, n = queue.pop()
+            f, n = queue.popleft()   # pop the top of the queue (has most priority)
 
             if revise(f, n):
                 if f.get_domain_size()==0 and not f.is_finalized():
                    return false
-
                 for xk in f.get_other_neighbours(n):
-                    queue.append((xk, f))
+                    if xk !=n :
+                      if f.is_finalized():
+                        queue.appendleft((xk, f))  # Heuristcs priority to arcs with finalized fields 
+                      else:
+                        queue.append((xk, f))
+                 
 
         print(self.sudoku)
         return True
