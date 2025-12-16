@@ -58,78 +58,78 @@ class Sudoku:
         """
     # to activate the diagonal constraints
         diagonal_constraint = False     
-        diagonal_constraint2  = False
+        diagonal_constraint2 = False
 
-     # iterate over the fields in the grid
+        # iterate over the fields in the grid
         for row in range(9):
             for col in range(9):       
                 field = grid[row][col]
                 neighbours = []
-                neighbours_Val =[]      # for testing 
+                neighbours_val = []      # for testing
 
-             # find the neighbours in the colum
+                # find the neighbours in the colum
                 for nc in range(9):     
                     if nc == col:
                         continue
-                    neighbours_Val.append(grid[row][nc].get_value()) #for testing
+                    neighbours_val.append(grid[row][nc].get_value())    # for testing
                     neighbours.append(grid[row][nc])
 
-              # find the neighbours in the row
+                # find the neighbours in the row
                 for nr in range(9):       
                     if nr == row:
                         continue
                     neighbours.append(grid[nr][col])
-                    neighbours_Val.append(grid[nr][col].get_value()) #for testing 
+                    neighbours_val.append(grid[nr][col].get_value())    # for testing
 
-              # find the neighbours in the subgrid
+                # find the neighbours in the subgrid
                 subgrid_row = row//3            
                 subgrid_col = col//3
                 subgrid_row_start = subgrid_row * 3
                 subgrid_col_start = subgrid_col * 3
 
                 for sr in range(subgrid_row_start, subgrid_row_start + 3):
-                    for sc in range (subgrid_col_start, subgrid_col_start + 3):
+                    for sc in range(subgrid_col_start, subgrid_col_start + 3):
                         if sr == row or sc == col:
                             continue
-                        neighbours_Val.append(grid[sr][sc].get_value()) #for testing 
+                        neighbours_val.append(grid[sr][sc].get_value()) # for testing
                         neighbours.append(grid[sr][sc])
 
-             # find the neighbours in the diagonal for extra constraint
-                if diagonal_constraint : 
-                   # add the frist diagonal       
+                # find the neighbours in the diagonal for extra constraint
+                if diagonal_constraint:
+                    # add the frist diagonal
                     if col == row:               
                         for dig_r in range(9):
-                            if dig_r == row : 
+                            if dig_r == row:
                                 continue
-                            for  dig_c in range(9):
+                            for dig_c in range(9):
                                 if dig_c == col:
                                     continue
                                 if dig_c == dig_r :
-                                  if not any(n == grid[dig_r][dig_c] for n in neighbours):
-                                        neighbours_Val.append(grid[dig_r][dig_c].get_value()) #for testing 
+                                    if not any(n == grid[dig_r][dig_c] for n in neighbours):
+                                        neighbours_val.append(grid[dig_r][dig_c].get_value())   # for testing
                                         neighbours.append(grid[dig_r][dig_c])
                                         
-                  # add second diagonal
+                    # add second diagonal
                     if col + row == 8 and diagonal_constraint2:   
                         for dig2_r in range(9):
-                            if dig2_r == row : 
+                            if dig2_r == row:
                                 continue
-                            for  dig2_c in range(9):
+                            for dig2_c in range(9):
                                 if dig2_c == col:
                                     continue
-                                if dig2_c + dig2_r ==8 :
+                                if dig2_c + dig2_r == 8:
                                      if not any(n == grid[dig2_r][dig2_c] for n in neighbours):
-                                        neighbours_Val.append(grid[dig2_r][dig2_c].get_value()) #for testing 
+                                        neighbours_val.append(grid[dig2_r][dig2_c].get_value())     # for testing
                                         neighbours.append(grid[dig2_r][dig2_c])   
 
-                #print ("neighbours of ",row,col,neighbours_Val )  # for testing 
+                # print("neighbours of ",row,col,neighbours_Val )  # for testing
                 field.set_neighbours(neighbours)
 
     def board_to_string(self):
         output = ""
         for row in range(len(self.board)):
             for col in range(len(self.board[row])):
-                output += str (self.board[row][col].get_value()) #convert to string 
+                output += str(self.board[row][col].get_value())    # convert to string
             output += "\n"
         return output
 

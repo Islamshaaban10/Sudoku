@@ -16,7 +16,7 @@ class Game:
         """
 
         print("Enter a heuristic (0-2): ")
-        heuristic = int(input())
+        heuristic = int(input())    # ask the user to select a heuristic
 
         grid = self.sudoku.get_board()
         queue = deque()
@@ -30,13 +30,14 @@ class Game:
                     if heuristic == 0:
                         queue.append((field, n))
 
-                    # Heuristics priority to arcs with finalized fields
+                    # Heuristic priority to arcs with finalized fields
                     elif heuristic == 1:
                         if n.is_finalized():
                             queue.appendleft((field, n))
                         else:
                             queue.append((field, n))
 
+                    # heuristic priority for a domain size with a certain size
                     elif heuristic == 2:
                         if n.get_domain_size() < 4:
                             queue.appendleft((field, n))
